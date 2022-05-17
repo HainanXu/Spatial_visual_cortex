@@ -9,3 +9,45 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Prepare the packages needed;download the correspongding packag.
+```{R}
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+
+#BiocManager::install("EBImage")
+library(BiocManager)
+library(EBImage)
+```
+
+Load the image `im1` as im, and take a biref look at it. The color mode of the image is `Color`, and the dimonsion of the image is 2936\times 4326 \times 3. There is only one imaage frame. The third dimension is assumed to hold different color channels when `colorMode: Color`.//
+
+```{R}
+im=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/im1.jpg")
+display(im)
+im=normalize(im)
+range(im)
+hist(im)
+```
+I performed log transformation to the original image. By doing this, I streched the dark part and compressed the bright part, making dart parts visible and bright part invisible to human eye.
+```{R}
+logim=2*log(1+im)
+display(logim)
+range(logim)
+hist(logim)
+```
+
+Due to limited biology knowledge, I assume we only interested in the large, black objects in the image.Let's convert the image to binary and perform a morphological operation.(to actually locate the position of doublet or triplet, I may consider only perform erode operation, and do not perform dialte)
+```{R}
+display(logim<0.99)
+imOpened = opening(logim<0.99,
+                             kern = makeBrush(7, shape = "disc"))
+display(imOpened)
+```
+
+Next, I segmented the binary image into objects. Here is a table of the objects.0 represents the background, and the numbers from 1 to 169 represents for the objects that we identified.  
+```{R}
+imSeed=bwlabel(imOpened)
+table(imSeed)
+summary(table(imSeed))
+display(colorLabels(imSeed),title="Segmented Object")
+```
