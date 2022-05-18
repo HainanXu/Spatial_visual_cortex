@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Prepare the packages needed;download the correspongding packag.
+Prepare the packages needed;download the correspongding packages.
 ```{R}
 #if (!require("BiocManager", quietly = TRUE))
 #    install.packages("BiocManager")
