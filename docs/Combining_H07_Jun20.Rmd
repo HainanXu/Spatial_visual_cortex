@@ -13,9 +13,10 @@ The files 42 image samples of "H07-0500_79205589_179_MBP" and 36 ROI(return of i
 ```{R}
 library(dplyr)
 library(readr)
+library(tidyverse)
 
 #first row
-df1<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x)
+df1<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area")
 
 #x axis + 500
 df2<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500)
@@ -45,7 +46,7 @@ df12<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._12_ana
 
 
 #fifth row
-#df13<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._13_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*4)
+df13<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._13_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*4)
 #x axis + 500
 df14<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._14_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*4)
 #x axis + 1000
@@ -68,25 +69,25 @@ df20<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._20_ana
 df21<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._21_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*6)
 
 #eighth row
-#df22<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._22_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*7)
+df22<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._22_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*7)
 #x axis + 500
 df23<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._23_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*7)
 #x axis + 1000
 df24<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._24_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*7)
 
 #nineth row
-#df25<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._25_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*8)
+df25<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._25_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*8)
 #x axis + 500
 df26<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._26_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*8)
 #x axis + 1000
-#df27<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._27_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*8)
+df27<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._27_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*8)
 
 #tenth row
 df28<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._28_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*9)
 #x axis + 500
-#df29<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._29_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*9)
+df29<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._29_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*9)
 #x axis + 1000
-#df30<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._30_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*9)
+df30<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._30_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*9)
 
 #row 11
 df31<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._31_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*10)
@@ -123,13 +124,13 @@ df42<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._42_ana
 df_full=rbind(df1,df2,df3,
               df4,df5,df6,
               df7,df8,df9,
-              df10,df11,df12
-                  ,df14,df15,
+              df10,df11,df12,
+              df13   ,df14,df15,
               df16,df17,df18,
-              df19,df20,df21
-                  ,df23,df24
-                  ,df26     ,
-              df28          ,
+              df19,df20,df21,
+               df22   ,df23,df24,
+               df25   ,df26,df27     ,
+              df28 ,df29,df30         ,
               df31,df32,df33,
               df34,df35,df36,
               df37,df38,df39,
@@ -139,8 +140,26 @@ df_full=rbind(df1,df2,df3,
 library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-d = density(subset(ln), edge=TRUE, diggle=TRUE)
+d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=60)
 plot(d)
 
 plot(ln)
 ```
+
+```{R}
+#marginal distribution
+
+```
+
+
+
+```{R}
+#quadratcount
+library(spatstat)
+qq=quadratcount(ln,nx=3,ny=12)
+plot(qq)
+
+quadrat.test(ln)
+```
+
+
