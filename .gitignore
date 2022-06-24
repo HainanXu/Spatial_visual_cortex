@@ -6,5 +6,7 @@
 spatial_visual_cortex.Rproj
 data/
 *.html
-demo.py
+
+*.svg
 *.py
+*.md

@@ -1,0 +1,150 @@
+---
+title: "June_2"
+author: "Hainan Xu"
+date: "02/06/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# MBP Feature extraction and analysis
+Here I used cropped picture(this is all I have) as an example. There are mainly 2 steps:    
+1. Threshold the image, then compute the features;    
+2. Use the features to compute intensity estimation and other graphs.
+## Step1: Feature extraction
+
+
+Load the package and previewthe image.
+
+```{r read image}
+library(BiocManager)
+library(EBImage)
+im=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/im3.jpg")
+display(im,method="raster")
+hist(im)
+```
+Check the histogram, we can see that there are 3 colors in the histogram, and they are interlaced. To make the segementation easier, we convert them to greyscale(using the red channel).
+```{r pressure, echo=FALSE}
+hist(im,xlim=c(0,1))
+im = channel(im,"r")
+hist(im)
+```
+Take a look at greyscaled `im`.
+```{R}
+display(im,method="raster")
+#w = makeBrush(size = 30, shape = "gaussian", sigma = 2)
+#nucSmooth = filter2(getFrame(r, 1), w)
+#display(nucSmooth)
+#display(nucSmooth<0.3)
+```
+After that, we apply a simple method to threshold our greyscale image `im`.
+```{R}
+hist(im)
+display(im<0.25)
+rThresh=im<0.25
+rOpened = EBImage::opening(rThresh,
+                            kern = makeBrush(3, shape = "disc"))
+display(rOpened)
+rRGB=toRGB(rOpened)
+display(rRGB,method="raster")
+writeImage(rRGB, "Ahad_June3.tiff", quality = 100)
+```
+After thresholing our image, we segment it into different objects.
+```{R}
+rSeed = bwlabel(rOpened)
+display(colorLabels(rSeed),method="raster")
+```
+Here we computed the features of this slice of image. There are 84 features in total, including shape features and moment features of the MBP cell. We create a new dataframe to store the 3 features that we need right now. The 3 features includes: x coordinate, y coordinate, area of each object. After this, we can convert it to a `ppp` object.
+
+```{R}
+rSeed=bwlabel(rOpened)
+table(rSeed)
+F1 = computeFeatures(rSeed,im, xname = "r",
+                     refnames = "r")
+```
+## Step2: Intensity estimation and other graphs
+First, create a new dataframe `MBP`. We can explore the distributions of the cells by computing the marginal distribution.
+```{R}
+library(ggplot2)
+library(ggExtra)
+x_coord<-F1[,1]
+y_coord<-F1[,2]
+size<-F1[,6]
+
+range(size)
+
+View(F1)
+
+ MBP<-data.frame(x=x_coord,
+              y=y_coord,
+              size=size
+          )
+ 
+range(size)
+ 
+head(MBP)
+
+a<-ggplot(MBP,
+   aes(x = x, y = y,size=size)) + geom_point(shape = ".",aes(size=size)) 
+a
+ggMarginal(a,type="histogram",fill = "lightblue")
+```
+Secondly, convert `MBP` as a porint process object. Here each circle indicates a cell, and the size of the cell is corresponding to the area each cell as occupied in pixel.
+```{R}
+library("spatstat")
+ln = with(MBP,
+  ppp(x = x, y = y, marks = size, xrange = range(x), yrange = range(y)))
+plot(ln)
+
+summary(ln)
+plot(Kest(ln))
+
+plot(envelope(ln,Kest)) #envelope
+
+plot(density(ln))
+
+
+```
+Thirdly, we can explore the first order effect: estimate the intensity of this particular region.
+```{r}
+d = density(subset(ln), edge=TRUE, diggle=TRUE)
+plot(d)
+
+
+```
+Fourthly, we can explore the second order effect: randomly pick a point, what is the distance to it's nearest neigbor?
+
+G function: the cumulative distribution function of the distance. Here the purple line indicates the possion process. The second graph is the zoomed in version of the first graph.
+```{R}
+
+gln = Gest(ln)
+gln
+library("RColorBrewer")
+plot(gln, xlim = c(0, 50), lty = 1, col = brewer.pal(4, "Set1"))
+plot(gln, xlim = c(0, 10), lty = 1, col = brewer.pal(4, "Set1"))
+```
+Ripley’s K function: for estimation and visualization, transfer K function as L function.
+```{R}
+Lln = Linhom(ln)
+plot(Lln)
+```
+Paired correlation function:
+```{R}
+pcfln = pcf(Kinhom(ln))
+plot(pcfln, lty = 1)
+plot(pcfln, lty = 1, xlim = c(0, 10))
+
+```
+Voronoi tessellation:
+```{R}
+library(deldir)
+
+# Calculate Voronoi Tesselation and tiles
+tesselation <- deldir(x_coord, y_coord)
+tiles <- tile.list(tesselation)
+
+plot(tiles,pch=10,showpoints = TRUE)
+
+```
