@@ -16,7 +16,7 @@ library(readr)
 
 #first row
 df1<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x)
-dim(df1)
+
 #x axis + 500
 df2<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500)
 #x axis + 1000
