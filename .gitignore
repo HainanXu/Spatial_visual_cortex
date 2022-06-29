@@ -5,8 +5,11 @@
 
 spatial_visual_cortex.Rproj
 data/
-*.html
+docs_examples/
+Figures/
 
-*.svg
-*.py
-*.md
+docs/*.html
+
+docs/*.docx
+docs/*.log
+docs/*.tex
