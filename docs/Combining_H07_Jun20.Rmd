@@ -1,0 +1,239 @@
+---
+title: "Combining_H07_June20"
+author: "Hainan Xu"
+date: "20/06/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE,warning=FALSE,message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The files 42 image samples of "H07-0500_79205589_179_MBP" and 42 ROI(return of information) tables. Here we convert the local coordinate to a global coordinate.
+```{R message=FALSE, warning=FALSE}
+library(dplyr)
+library(readr)
+library(tidyverse)
+
+#first row
+df1<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area")
+
+#x axis + 500
+df2<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500)
+#x axis + 1000
+df3<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._03_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000)
+
+#second row
+df4<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._04_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300)
+#x axis + 500
+df5<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._05_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300)
+#x axis + 1000
+df6<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._06_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300)
+
+#third row
+df7<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._07_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+600)
+#x axis + 500
+df8<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._08_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+600)
+#x axis + 1000
+df9<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._09_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+600)
+
+#fourth row
+df10<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._10_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+900)
+#x axis + 500
+df11<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._11_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+900)
+#x axis + 1000
+df12<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._12_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+900)
+
+
+#fifth row
+df13<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._13_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*4)
+#x axis + 500
+df14<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._14_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*4)
+#x axis + 1000
+df15<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._15_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*4)
+
+#sixth row
+df16<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._16_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*5)
+dim(df1)
+#x axis + 500
+df17<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._17_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*5)
+#x axis + 1000
+df18<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._18_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*5)
+
+#seventh row
+df19<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._19_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*6)
+dim(df1)
+#x axis + 500
+df20<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._20_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*6)
+#x axis + 1000
+df21<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._21_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*6)
+
+#eighth row
+df22<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._22_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*7)
+#x axis + 500
+df23<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._23_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*7)
+#x axis + 1000
+df24<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._24_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*7)
+
+#nineth row
+df25<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._25_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*8)
+#x axis + 500
+df26<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._26_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*8)
+#x axis + 1000
+df27<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._27_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*8)
+
+#tenth row
+df28<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._28_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*9)
+#x axis + 500
+df29<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._29_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*9)
+#x axis + 1000
+df30<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._30_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*9)
+
+#row 11
+df31<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._31_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*10)
+#x axis + 500
+df32<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._32_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*10)
+#x axis + 1000
+df33<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._33_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*10)
+
+#row 12
+df34<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._34_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*11)
+#x axis + 500
+df35<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._35_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*11)
+#x axis + 1000
+df36<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._36_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*11)
+
+#row 13
+df37<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._37_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*12)
+#x axis + 500
+df38<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._38_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*12)
+#x axis + 1000
+df39<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._39_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*12)
+
+#row 14
+df40<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._40_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*13)
+#x axis + 500
+df41<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._41_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*13)
+#x axis + 1000
+df42<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._42_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*13)
+
+```
+
+```{R message=FALSE}
+# there are 3604 points in total, 3604/36 \approx 100
+df_full=rbind(df1,df2,df3,
+              df4,df5,df6,
+              df7,df8,df9,
+              df10,df11,df12,
+              df13   ,df14,df15,
+              df16,df17,df18,
+              df19,df20,df21,
+               df22   ,df23,df24,
+               df25   ,df26,df27     ,
+              df28 ,df29,df30         ,
+              df31,df32,df33,
+              df34,df35,df36,
+              df37,df38,df39,
+              df40,df41,df42
+              )
+
+dim(df_full)
+df_upper=rbind(df1,df2,df3,
+              df4,df5,df6,
+              df7,df8,df9,
+              df10,df11,df12,
+              df13   ,df14,df15,
+              df16,df17,df18,
+              df19,df20,df21)
+
+df_upper2=rbind(df1,df2,df3,
+              df4,df5,df6,
+              df7,df8,df9)
+dim(df_upper)
+library("spatstat")
+ln = with(df_full,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=55)
+plot(d)
+
+plot(ln)
+ln_upper = with(df_upper,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+ln_upper2 = with(df_upper2,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+
+
+```
+
+```{R}
+#marginal distribution
+library(ggExtra)
+a<-ggplot(df_full,
+   aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x position in pixel")+ylab("y position in pixel")+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)+theme_bw()
+
+a
+
+ggMarginal(a,type="histogram",fill = "lightgrey")
+
+```
+
+It seems that there are some variation within different layers. For the whole image, it is look like not possion process. However, the MBP cells in upper part may be a completely random process.
+
+```{R}
+#Tests based on quadrats:quadratcount
+library(spatstat)
+qq=quadratcount(ln,nx=3,ny=12)
+plot(qq)
+
+quadrat.test(qq)
+
+qq_u=quadratcount(ln_upper,nx=1,ny=6)
+plot(qq_u)
+quadrat.test(ln_upper)
+quadrat.test(qq_u)
+
+qq_u=quadratcount(ln_upper,nx=3,ny=1)
+plot(qq_u)
+quadrat.test(ln_upper)
+quadrat.test(qq_u)
+
+qq_u2=quadratcount(ln_upper2,nx=5,ny=10)
+plot(qq_u2)
+quadrat.test(ln_upper2)
+quadrat.test(qq_u2)
+#The result is heavily depend on the choices of r and c
+
+
+```
+The fig displayed the count of observations of each quadrat. After that we perform a chi-square test.
+```{R}
+#Greig-Smith analysis
+qq_u=quadratcount(ln_upper,nx=10,ny=10)
+plot(qq_u)
+
+```
+
+```{R}
+#Tests based on distances:
+## computationally expensive to calculate the nearest neighborhood
+##accuracy of the points location is very important
+gln = Gest(ln)
+plot(gln)
+?Gest
+?Kest
+?envelope
+eG<-envelope(ln, fun=Gest, nsim=99,nrank=1)
+plot(eG)
+
+eK<-envelope(ln, fun=Kest, nsim=99, nrank=1)
+plot(eK)
+```
+
+```{r}
+?Kest
+
+```

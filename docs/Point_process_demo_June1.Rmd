@@ -1,0 +1,182 @@
+---
+title: "Point_process_June9"
+author: "Hainan Xu"
+date: "09/06/2022"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE,warning=FALSE,message=FALSE,echo =FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Point process
+
+I converted the orginal dataset to the dataset with 4 variables: x position, y position, roi_scource,size of the rectangle.
+
+Here is the size distribution of all the points. It shows a right-skewed distribution.
+
+```{r warning=FALSE,message=FALSE,echo =FALSE,fig.align = 'center'}
+library("readr")
+library("dplyr")
+
+MBP<-read_csv(file.path("..", "data","H07-0500_79205589_179_1_MBP._analysis_results.csv"))%>%
+  transmute(x=com_x,
+              y=com_y,
+              class=roi_source,
+            size=pixel_area)
+hist(MBP$size)
+
+```
+
+I plot the points based on thier position and the with marginal distributions of the points. More formatting need to be adjusted.
+
+```{r warning=FALSE,message=FALSE,echo =FALSE,fig.align='center',fig}
+library(ggplot2)
+ggplot(MBP,
+   aes(x = x, y = y,color=class)) + geom_point(shape = ".",pch=20) +facet_grid( . ~ class) + guides(col =FALSE)
+
+library(ggExtra)
+a<-ggplot(MBP,
+   aes(x = x, y = y,size=size)) + geom_point(shape = ".",aes(size=size)) 
+a
+ggMarginal(a,type="histogram",fill = "lightblue")
+```
+
+\newpage
+#### Shape
+Then, I converted the data as a marked point process. The mark I use is the size of the rectangle. After that, I extracted the shape of the visual cortex based on the points provided. Here `plot(ln)` can plot the whole marked point process, the size of the circle indicate the size of the original rectangle size.
+```{R warning=FALSE,message=FALSE,echo =FALSE,fig.align = 'center', fig.cap="Marked Point Process"}
+library("spatstat")
+ln = with(MBP,
+  ppp(x = x, y = y, marks = size, xrange = range(x), yrange = range(y)))
+ln
+
+plot(ln)
+
+library("geometry")
+coords = cbind(ln$x, ln$y)
+chull = convhulln( coords )
+
+pidx = integer(nrow(chull) + 1)
+pidx[1:2] = chull[1, ]
+chull[1, ] = NA
+for(j in 3:length(pidx)) {
+  wh = which(chull == pidx[j-1], arr.ind = TRUE)
+  stopifnot(nrow(wh )== 1)
+  wh[, "col"] = 3 - wh[, "col"] ## 2->1, 1->2
+  pidx[j] = chull[wh]
+  chull[wh[, "row"], ] = NA
+}
+pidx = rev(pidx)
+
+View(pidx)
+
+ggplot(tibble(x = ln$x, y = ln$y)[pidx, ], aes(x = x, y = y)) +
+  geom_point() + geom_path() + coord_fixed()
+
+ln = with(MBP,
+   ppp(x = x, y = y, marks = class, poly = coords[rev(pidx), ],
+       check = FALSE))
+ln
+```
+\newpage
+#### Voronoi Tessilation
+This is the Voronoi tessilation using `deldir` package.
+```{R fig.align = 'center'}
+library(deldir)
+
+# Data
+
+x <- MBP$x
+y <- MBP$y
+
+# Calculate Voronoi Tesselation and tiles
+tesselation <- deldir(x, y)
+tiles <- tile.list(tesselation)
+
+plot(tiles,pch=10,showpoints = FALSE)
+
+
+plot(tiles, pch = 1,
+     col.pts = "white",
+     border = "white",
+     fillcol = hcl.colors(50, "viridis"),
+    showpoints = FALSE
+     ) 
+
+
+
+```
+
+
+\newpage
+#### First order effect: estimation of the intensity.
+This is the estimation of the intensity of the MBP cells. 
+
+```{R warning=FALSE,message=FALSE,echo =FALSE,fig.align = 'center'}
+d = density(subset(ln, marks == "MBP"), edge=TRUE, diggle=TRUE)
+plot(d)
+```
+\newpage
+#### Second order effect: distance to it's nearest neighbor.
+
+Used 3 different edge effect correction. Here, only the correlation of margin is calculated since there are too much point.
+
+G(r) is the cumulative distance, r is the distance. 
+```{R warning=FALSE,message=FALSE,echo =FALSE,fig.align = 'center'}
+gln = Gest(ln)
+gln
+
+library("RColorBrewer")
+plot(gln, xlim = c(0, 100), lty = 1, col = brewer.pal(4, "Set1"))
+
+?density
+
+```
+Paired correlation function
+```{R warning=FALSE,message=FALSE,echo =FALSE,fig.align = 'center'}
+
+Lln = Linhom(subset(ln, marks == "MBP"))
+Lln
+pcfln = pcf(Kinhom(subset(ln, marks == "MBP")))
+plot(pcfln, lty = 1)
+plot(pcfln, lty = 1, xlim = c(0, 10))
+```
+
+\newpage
+
+## Similar Analyais for a different pic:
+```{R,fig.align = 'center'}
+MBP2<-read_csv(file.path("..", "data","H07-0500_79205589_179_2_MBP._analysis_results.csv"))%>%
+  transmute(x=com_x,
+              y=com_y,
+              class="MBP")
+
+MBP2
+
+ln2 = with(MBP2,
+  ppp(x = x, y = y, marks = class, xrange = range(x), yrange = range(y)))
+ln2
+
+ggplot(MBP2,
+   aes(x = x, y = y, col = class)) + geom_point(shape = ".") +
+   facet_grid( . ~ class) + guides(col =FALSE)
+
+d2 = density(subset(ln2, marks == "MBP"), edge=TRUE, diggle=TRUE)
+plot(d2)
+
+gln2 = Gest(ln2)
+
+
+library("RColorBrewer")
+plot(gln2, xlim = c(0, 10), lty = 1, col = brewer.pal(4, "Set1"))
+
+pcfln2 = pcf(Kinhom(subset(ln2, marks == "MBP")))
+plot(pcfln2, lty = 1)
+plot(pcfln2, lty = 1, xlim = c(0, 10))
+
+```
+

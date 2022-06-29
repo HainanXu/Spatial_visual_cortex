@@ -1,0 +1,63 @@
+---
+title: "MSMB_point_process"
+author: "Hainan Xu"
+date: "08/06/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+*Marked Point Process*: a type of data that includes coordinates and the types of all the cells.
+
+
+```{r cars}
+library("readr")
+library("dplyr")
+cellclasses=c("T_cells","Tumor","DCs","other_cells")
+brcalymphnode=lapply(cellclasses,function(k){
+  read_csv(file.path("/Users/hainanxu/Documents/spatial_visual_cortex","data_MSMB",
+                     sprintf("99_4525D-%s.txt",k)))%>%
+    transmute(x=globalX,
+              y=globalY,
+              class=k)
+})%>% bind_rows %>% mutate(class=factor(class))
+
+brcalymphnode
+
+
+```
+
+### Convex hull
+
+```{R}
+library("spatstat")
+ln = with(brcalymphnode,
+  ppp(x = x, y = y, marks = class, xrange = range(x), yrange = range(y)))
+ln
+
+library("geometry")
+coords = cbind(ln$x,ln$y)
+chull = convhulln(coords)
+chull
+
+pidx = integer(nrow(chull) +1)
+
+pidx[1:2] = chull[1,]
+chull[1,]=NA
+chull
+
+
+for(j in 3:length(pidx)) {
+  wh= which(chull == pidx[j-1], arr.ind =TRUE)
+  stopifnot(nrow(wh)==1)
+  wh[,"col"] = 3- wh[,"col "]
+  
+}
+
+?rev
+
+```
