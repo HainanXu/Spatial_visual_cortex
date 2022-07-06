@@ -18,109 +18,110 @@ library(readr)
 library(tidyverse)
 
 #first row
-df1<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area")
+df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")
 
 #x axis + 500
-df2<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500)
+df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500)
 #x axis + 1000
-df3<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._03_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000)
+df3<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._03_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000)
 
 #second row
-df4<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._04_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300)
+df4<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._04_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300)
 #x axis + 500
-df5<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._05_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300)
+df5<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._05_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300)
 #x axis + 1000
-df6<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._06_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300)
+df6<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._06_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300)
 
 #third row
-df7<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._07_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+600)
+df7<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._07_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+600)
 #x axis + 500
-df8<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._08_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+600)
+df8<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._08_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+600)
 #x axis + 1000
-df9<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._09_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+600)
+df9<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._09_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+600)
 
 #fourth row
-df10<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._10_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+900)
+df10<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._10_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+900)
 #x axis + 500
-df11<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._11_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+900)
+df11<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._11_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+900)
 #x axis + 1000
-df12<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._12_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+900)
+df12<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._12_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+900)
 
 
 #fifth row
-df13<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._13_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*4)
+df13<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._13_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*4)
 #x axis + 500
-df14<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._14_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*4)
+df14<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._14_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*4)
 #x axis + 1000
-df15<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._15_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*4)
+df15<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._15_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*4)
 
 #sixth row
-df16<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._16_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*5)
+df16<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._16_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*5)
 dim(df1)
 #x axis + 500
-df17<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._17_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*5)
+df17<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._17_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*5)
 #x axis + 1000
-df18<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._18_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*5)
+df18<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._18_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*5)
 
 #seventh row
-df19<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._19_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*6)
+df19<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._19_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*6)
 dim(df1)
 #x axis + 500
-df20<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._20_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*6)
+df20<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._20_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*6)
 #x axis + 1000
-df21<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._21_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*6)
+df21<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._21_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*6)
 
 #eighth row
-df22<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._22_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*7)
+df22<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._22_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*7)
 #x axis + 500
-df23<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._23_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*7)
+df23<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._23_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*7)
 #x axis + 1000
-df24<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._24_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*7)
+df24<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._24_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*7)
 
 #nineth row
-df25<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._25_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*8)
+df25<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._25_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*8)
 #x axis + 500
-df26<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._26_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*8)
+df26<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._26_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*8)
 #x axis + 1000
-df27<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._27_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*8)
+df27<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._27_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*8)
 
 #tenth row
-df28<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._28_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*9)
+df28<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._28_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*9)
 #x axis + 500
-df29<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._29_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*9)
+df29<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._29_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*9)
 #x axis + 1000
-df30<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._30_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*9)
+df30<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._30_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*9)
 
 #row 11
-df31<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._31_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*10)
+df31<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._31_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*10)
 #x axis + 500
-df32<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._32_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*10)
+df32<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._32_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*10)
 #x axis + 1000
-df33<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._33_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*10)
+df33<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._33_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*10)
 
 #row 12
-df34<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._34_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*11)
+df34<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._34_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*11)
 #x axis + 500
-df35<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._35_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*11)
+df35<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._35_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*11)
 #x axis + 1000
-df36<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._36_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*11)
+df36<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._36_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*11)
 
 #row 13
-df37<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._37_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*12)
+df37<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._37_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*12)
 #x axis + 500
-df38<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._38_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*12)
+df38<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._38_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*12)
 #x axis + 1000
-df39<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._39_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*12)
+df39<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._39_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*12)
 
 #row 14
-df40<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._40_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x,com_y=com_y+300*13)
+df40<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._40_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*13)
 #x axis + 500
-df41<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._41_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+500,com_y=com_y+300*13)
+df41<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._41_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500,com_y=com_y+300*13)
 #x axis + 1000
-df42<-read_csv("data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._42_analysis_results.csv")%>%select("com_x","com_y","pixel_area")%>%mutate(com_x=com_x+1000,com_y=com_y+300*13)
+df42<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._42_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*13)
 
 ```
-
+(com_x,com_y) is the center of the rectangular marker.
+We combine the 42 dataframes and convert them into ppp object. After that,we compute the first order intensity as well as the nearest neighbor distance distribution.
 ```{R message=FALSE}
 # there are 3604 points in total, 3604/36 \approx 100
 df_full=rbind(df1,df2,df3,
@@ -140,42 +141,84 @@ df_full=rbind(df1,df2,df3,
               )
 
 dim(df_full)
-df_upper=rbind(df1,df2,df3,
-              df4,df5,df6,
-              df7,df8,df9,
-              df10,df11,df12,
-              df13   ,df14,df15,
-              df16,df17,df18,
-              df19,df20,df21)
 
-df_upper2=rbind(df1,df2,df3,
-              df4,df5,df6,
-              df7,df8,df9)
-dim(df_upper)
 library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=55)
 plot(d)
 
-plot(ln)
-ln_upper = with(df_upper,
-  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-
-ln_upper2 = with(df_upper2,
-  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-
-
+hist(nndist(ln))
+range(nndist(ln))
 
 ```
+The minimum distance is 0, which seems questionable. It turns out there are 6 pairs of points centered at the same xy coordinate with different pixel sizes. All 6 pairs of points are marked by the machine learning model(i.e. roi_source=MBP). We need to further clarify whether the points are the same points being identified twice or they are doublets. The duplicated points also indicate that the pixel_size might a biased estimator for the cell size.
 
+```{R}
+aaa<-df_full
+aaa[3]<-NULL
+sum(duplicated(aaa))
+
+CheckUnique<-function(object){
+ 
+  return(!any(duplicated(object)))
+}
+CheckUnique(df_full)
+CheckUnique(aaa)
+
+head(aaa)
+View(aaa)
+which(duplicated(aaa))
+
+ls<-list(aaa[824,],
+         aaa[1159,],
+         aaa[1178,],
+         aaa[2463,],
+         aaa[2796,],
+         aaa[3102,])
+ls
+ls2<-list(df_full[824,],
+          df_full[1159,],
+          df_full[1178,],
+          df_full[2463,],
+          df_full[2796,],
+          df_full[3102,])
+ls2
+
+filter(df_full,com_x==1433,com_y==1484)
+```
+For the purpose of analysis, we removed the duplicated points for the moment. Then we can find minimal distance between the points and then compute the corresponding scale. The range of of nearest distance is 1, which is 1 pixel in the original image. Checking the graph, it highly possible to be a doublet. We need to come up with a different method.
+
+A possible method to compute scale is to consider the distance between the cells boundaries.
+
+
+```{R}
+??distinct
+df_full[4]<-NULL
+df_sub<-distinct(df_full[c(1,2)])
+
+hist(nndist(df_sub))
+
+range(nndist(df_sub))
+
+which(nndist(df_sub)==1)
+
+View(df_sub)
+df_sub[315,]
+
+length(df_sub)
+
+t = seq(0,1500,by=20)
+plot(df_sub)
++points(x=1093,y=656,col="red")
+
+```
+We generated a scatter plot of the MBP dataset in addition to a mariginal plot.
 ```{R}
 #marginal distribution
 library(ggExtra)
 a<-ggplot(df_full,
    aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x position in pixel")+ylab("y position in pixel")+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)+theme_bw()
-
-a
 
 ggMarginal(a,type="histogram",fill = "lightgrey")
 
@@ -220,16 +263,16 @@ plot(qq_u)
 ```{R}
 #Tests based on distances:
 ## computationally expensive to calculate the nearest neighborhood
-##accuracy of the points location is very important
+##accuracy of the points location is important
 gln = Gest(ln)
 plot(gln)
 ?Gest
 ?Kest
 ?envelope
-eG<-envelope(ln, fun=Gest, nsim=99,nrank=1)
+eG<-envelope(ln, fun=Gest, nsim=200,nrank=1)
 plot(eG)
 
-eK<-envelope(ln, fun=Kest, nsim=99, nrank=1)
+eK<-envelope(ln, fun=Kest, nsim=200, nrank=1)
 plot(eK)
 ```
 
