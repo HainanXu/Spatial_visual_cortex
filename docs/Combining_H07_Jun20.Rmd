@@ -121,7 +121,7 @@ df42<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79
 
 ```
 (com_x,com_y) is the center of the rectangular marker.
-We combine the 42 dataframes and convert them into ppp object. After that,we compute the first order intensity as well as the nearest neighbor distance distribution.
+We combine the 42 dataframes and convert them into ppp object. After that,we compute the first order intensity as well as the nearest neighbor distance distribution. The distribution is right skewed. Also, it is noticable that there are 22 events whose nearest distance is smaller or euqal to 1.
 ```{R message=FALSE}
 # there are 3604 points in total, 3604/36 \approx 100
 df_full=rbind(df1,df2,df3,
@@ -145,10 +145,17 @@ dim(df_full)
 library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=55)
+d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=80)
+plot(ln)
 plot(d)
 
-hist(nndist(ln))
+
+library(ggplot2)
+
+hist(nndist(ln),breaks=120,xlim=c(0,120))
+
+sum(nndist(ln)<=1)
+
 range(nndist(ln))
 
 ```
@@ -187,17 +194,14 @@ ls2
 
 filter(df_full,com_x==1433,com_y==1484)
 ```
-For the purpose of analysis, we removed the duplicated points for the moment. Then we can find minimal distance between the points and then compute the corresponding scale. The range of of nearest distance is 1, which is 1 pixel in the original image. Checking the graph, it highly possible to be a doublet. We need to come up with a different method.
-
-A possible method to compute scale is to consider the distance between the cells boundaries.
-
+For the purpose of analysis, we removed the duplicated points for the moment. Then we can find minimal distance between the points and then compute the corresponding scale. The range of of nearest distance is 1, which is 1 pixel in the original image. Checking the graph, it highly possible to be a doublet. We need to come up with a different method. Meanwhile, we may be able to filter out the doublets by theresholding the nearest distance.
 
 ```{R}
 ??distinct
 df_full[4]<-NULL
 df_sub<-distinct(df_full[c(1,2)])
 
-hist(nndist(df_sub))
+hist(nndist(df_sub),breaks=100)
 
 range(nndist(df_sub))
 
@@ -226,39 +230,16 @@ ggMarginal(a,type="histogram",fill = "lightgrey")
 
 It seems that there are some variation within different layers. For the whole image, it is look like not possion process. However, the MBP cells in upper part may be a completely random process.
 
+The fig displayed the count of observations of each quadrat. After that we perform a chi-square test. P-value is very small, which indicates that we reject the null hypothesis. The process is not CSR.
 ```{R}
 #Tests based on quadrats:quadratcount
 library(spatstat)
 qq=quadratcount(ln,nx=3,ny=12)
 plot(qq)
-
 quadrat.test(qq)
-
-qq_u=quadratcount(ln_upper,nx=1,ny=6)
-plot(qq_u)
-quadrat.test(ln_upper)
-quadrat.test(qq_u)
-
-qq_u=quadratcount(ln_upper,nx=3,ny=1)
-plot(qq_u)
-quadrat.test(ln_upper)
-quadrat.test(qq_u)
-
-qq_u2=quadratcount(ln_upper2,nx=5,ny=10)
-plot(qq_u2)
-quadrat.test(ln_upper2)
-quadrat.test(qq_u2)
 #The result is heavily depend on the choices of r and c
-
-
 ```
-The fig displayed the count of observations of each quadrat. After that we perform a chi-square test.
-```{R}
-#Greig-Smith analysis
-qq_u=quadratcount(ln_upper,nx=10,ny=10)
-plot(qq_u)
 
-```
 
 ```{R}
 #Tests based on distances:
@@ -266,17 +247,43 @@ plot(qq_u)
 ##accuracy of the points location is important
 gln = Gest(ln)
 plot(gln)
-?Gest
-?Kest
-?envelope
 eG<-envelope(ln, fun=Gest, nsim=200,nrank=1)
 plot(eG)
 
+plot(eG,xlim=c(0,5))
+
 eK<-envelope(ln, fun=Kest, nsim=200, nrank=1)
 plot(eK)
+plot(eK,xlim=c(0,5))
+
+
+```
+```{R}
+#inhomogeneious L function for MBP datasets
+Lln=Linhom(ln)
+plot(Lln,lty=1)
+plot(Lln,lty=1,xlim = c(0,10))
+
 ```
 
+```{R}
+#paired correlation function
+
+Kinhom(ln)
+
+plot(Kinhom(ln)) 
+
+pcrln=pcf(Kinhom(ln))
+
+plot(pcrln)
+
+```
 ```{r}
 ?Kest
+
+?Gest
+?Kest
+?envelope
+?Linhom
 
 ```
