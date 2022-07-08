@@ -54,6 +54,15 @@ df14<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79
 #x axis + 1000
 df15<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._15_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+1000,com_y=com_y+300*4)
 
+aa<-df15
+aa[3]<-NULL
+
+sum(duplicated(aa))
+
+which(duplicated(aa))
+
+aa[68,]
+
 #sixth row
 df16<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._16_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+300*5)
 dim(df1)
@@ -247,6 +256,12 @@ quadrat.test(qq)
 ##accuracy of the points location is important
 gln = Gest(ln)
 plot(gln)
+
+ginhomln=Ginhom(ln)
+plot(ginhomln,xlim=c(0,35))
+eGinhom = envelope(ln, fun=Ginhom, nsim=200,nrank=1)
+plot(eGinhom)
+
 eG<-envelope(ln, fun=Gest, nsim=200,nrank=1)
 plot(eG)
 
