@@ -1,0 +1,41 @@
+---
+title: "Plot"
+author: "Hainan Xu"
+date: "07/07/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{R}
+library(EBImage)
+im=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/im001.jpeg")
+display(im)
+library(plotly)
+as.data.frame(d)
+
+
+
+fig <- plot_ly(as.data.frame(d),
+  type = "contour" 
+)
+fig
+data("volcano")
+volcano
+
+
+im=image(im,axes=FALSE,col=grey(seq(0,1,length=180)))
+
+a<-hist(df_full$com_x)
+b<-hist(df_full$com_y)
+c<-hist(df_full$pixel_area)
+x<-a$counts
+y<-b$counts
+z<-c$counts
+
+persp(x, y, z)
+
+```
+

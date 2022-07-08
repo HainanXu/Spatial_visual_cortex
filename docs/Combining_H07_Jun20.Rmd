@@ -159,6 +159,8 @@ plot(ln)
 plot(d)
 
 
+
+
 library(ggplot2)
 
 hist(nndist(ln),breaks=120,xlim=c(0,120))
