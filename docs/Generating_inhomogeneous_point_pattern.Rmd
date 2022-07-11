@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+author: "Hainan Xu"
+date: "08/07/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+uniform Poisson process with 400 points
+```{R}
+library(spatstat)
+a<-rpoispp(400)
+plot(a)
+```
+uniform Poisson process with intensity 1 in 10 \times 10 box constraint.
+```{R}
+library(spatstat)
+a<-rpoispp(1, win=owin(c(0,10),c(0,10)))
+plot(a)
+```
+inhomogeneous Poisson process with intensity function in 10 \times 10 box constraint.
+```{R}
+
+lambda=function(x,y,s) {100*exp(-(x^2+y^2)/s^2)}
+a<-rpoispp(1,win=owin(c(0,10),c(0,10)),
+         nsim=1, drop=TRUE, ex=NULL, warnwin=TRUE)
+plot(a)
+```
+
+randomize point pattern in MBP dataset.
+```{R}
+ln = with(df_full,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+a<-rpoispp(intensity(ln), win=Window(ln))
+plot(a)
+a
+
+rpoispp(ex=ln)
+```
