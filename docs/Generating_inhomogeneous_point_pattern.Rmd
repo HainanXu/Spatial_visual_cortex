@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Generating IPP"
 author: "Hainan Xu"
 date: "08/07/2022"
 output: html_document
@@ -9,8 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Two functions, rpoispp and rpoispp. One is for poisson process, the latter one is for marked point process.
 uniform Poisson process with 400 points
 ```{R}
+library(readr)
+df_full=read_csv("H07-0500_79205589_179_MBP")
 library(spatstat)
 a<-rpoispp(400)
 plot(a)
@@ -30,14 +33,35 @@ a<-rpoispp(1,win=owin(c(0,10),c(0,10)),
 plot(a)
 ```
 
-randomize point pattern in MBP dataset.
+randomize point pattern in MBP dataset.We need an intensity function for to estimate the intensity of the dataset.Therefore, I used lambda=density(ln)
 ```{R}
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-
+plot(ln)
+intensity(ln)
 a<-rpoispp(intensity(ln), win=Window(ln))
 plot(a)
 a
 
 rpoispp(ex=ln)
+
+#if I divide the dataset into infinitely small strips. 
 ```
+
+```{R}
+plot(density(ln))
+plot(density(a))
+```
+
+```{R}
+gln = Gest(a)
+plot(gln,xlim=c(0,4))
+
+
+eG<-envelope(a, fun=Gest, nsim=20, nrank=1)
+plot(eG,xlim=c(0,10))
+
+eK<-envelope(a, fun=Kest, nsim=20, nrank=1)
+plot(eK,xlim=c(0,100))
+```
+
