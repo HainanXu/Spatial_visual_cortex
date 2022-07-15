@@ -19,6 +19,7 @@ fig <- plot_ly(
   z=df_full$pixel_area, 
   type = "contour" 
 )
+??plot_ly
 fig
 
 

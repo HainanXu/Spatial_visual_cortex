@@ -151,6 +151,8 @@ df_full=rbind(df1,df2,df3,
 
 dim(df_full)
 
+write_csv(df_full,"H07-0500_79205589_179_MBP")
+
 library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
@@ -262,7 +264,7 @@ plot(gln)
 ginhomln=Ginhom(ln)
 plot(ginhomln,xlim=c(0,35))
 eGinhom = envelope(ln, fun=Ginhom, nsim=200,nrank=1)
-plot(eGinhom)
+plot(eGinhom,xlim=c(0,5))
 
 eG<-envelope(ln, fun=Gest, nsim=200,nrank=1)
 plot(eG)

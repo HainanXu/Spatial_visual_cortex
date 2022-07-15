@@ -17,6 +17,8 @@ df_full=read_csv("H07-0500_79205589_179_MBP")
 library(spatstat)
 a<-rpoispp(400)
 plot(a)
+
+
 ```
 uniform Poisson process with intensity 1 in 10 \times 10 box constraint.
 ```{R}
