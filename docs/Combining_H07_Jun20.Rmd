@@ -156,6 +156,8 @@ write_csv(df_full,"H07-0500_79205589_179_MBP")
 library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+ln2 = with(df_full,
+  ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(com_y)))
 d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=80)
 plot(ln)
 plot(d)
@@ -296,13 +298,18 @@ pcrln=pcf(Kinhom(ln))
 
 plot(pcrln)
 
+??Gest
+
 ```
-```{r}
-?Kest
 
-?Gest
-?Kest
-?envelope
-?Linhom
 
+```{R}
+library(spatstat)
+ppm(ln2[1:10])
+is.poisson(ppm(ln2))
+
+is.stationary(ppm(ln2))
+
+?ppm
+plot.ppm(ppm(ln2))
 ```
