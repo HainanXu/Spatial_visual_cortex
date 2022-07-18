@@ -157,9 +157,9 @@ library("spatstat")
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 ln2 = with(df_full,
-  ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(com_y)))
+  ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
 d = density(subset(ln), edge=TRUE, diggle=TRUE,sigma=80)
-plot(ln)
+plot(ln2)
 plot(d)
 
 
@@ -189,7 +189,7 @@ CheckUnique(df_full)
 CheckUnique(aaa)
 
 head(aaa)
-View(aaa)
+
 which(duplicated(aaa))
 
 ls<-list(aaa[824,],
@@ -222,7 +222,6 @@ range(nndist(df_sub))
 
 which(nndist(df_sub)==1)
 
-View(df_sub)
 df_sub[315,]
 
 length(df_sub)
@@ -232,20 +231,30 @@ plot(df_sub)
 +points(x=1093,y=656,col="red")
 
 ```
-We generated a scatter plot of the MBP dataset in addition to a mariginal plot.
+We generated a scatter plot of the MBP dataset in addition to a mariginal plot. It looks like a multimodal distribution. Based on a zoomed-in histrogram, we'd say that points with x\in[0,400] are in white matter layer.
 ```{R}
 #marginal distribution
 library(ggExtra)
+library(plotly)
 a<-ggplot(df_full,
-   aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x position in pixel")+ylab("y position in pixel")+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)+theme_bw()
+   aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x position in pixel")+ylab("y position in pixel")+theme_bw()+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)
 
-ggMarginal(a,type="histogram",fill = "lightgrey")
+b<-ggMarginal(a,type="histogram",fill = "lightgrey",binwidth=10)
+b
+?ggMarginal
+
+c<-hist(sqrt(df_full$com_x),breaks=200)
+d<-hist((df_full$com_y),breaks=200,xlim=c(0,400))
+
+d2<-hist(sqrt(df_full$com_y),breaks=200)
 
 ```
 
-It seems that there are some variation within different layers. For the whole image, it is look like not possion process. However, the MBP cells in upper part may be a completely random process.
+It seems that there are some variation within different layers. We performed two hypothesis testing for quadrat count to check for their CSR:1. whole point pattern;2.white matter.\\
+Null hypothesis is that the process is CSR.
+1.The fig displayed the count of observations of each quadrat. After that we perform a chi-square test. P-value is very small, which indicates that we reject the null hypothesis. The whole process is not CSR.\\
+2.For the white matter part, P values vareis from 0.02 to 0.21, based on the quadrat number that we selected. This indicates that the quadrat count method is very unstable. We need a solid tool to solve this question, for example, G function. It turns out the empirical G function fall within the envelope, indicating we fail to reject the null hypothesis, the process could be a complete random process.
 
-The fig displayed the count of observations of each quadrat. After that we perform a chi-square test. P-value is very small, which indicates that we reject the null hypothesis. The process is not CSR.
 ```{R}
 #Tests based on quadrats:quadratcount
 library(spatstat)
@@ -253,6 +262,19 @@ qq=quadratcount(ln,nx=3,ny=12)
 plot(qq)
 quadrat.test(qq)
 #The result is heavily depend on the choices of r and c
+
+
+
+wm<-df_full[df_full$com_y<400,]
+ln
+qq2=quadratcount(ln2,nx=3,ny=5)
+quadrat.test(qq2)
+
+eG = envelope(ln2, fun=Gest, nsim=200,nrank=1)
+plot(eG,xlim=c(0,100))
+
+eK<-envelope(ln2, fun=Kest, nsim=200, nrank=1)
+plot(eK)
 ```
 
 
