@@ -140,7 +140,7 @@ y_coord_2<-F2[,2]
  ln2 = with(MBP2,
            ppp(x = x_coord_2, y = y_coord_2, xrange = range(x_coord_2), yrange = range(y_coord_2)))
 plot(ln2)
-d2 = density(ln2), edge=TRUE, diggle=TRUE)
+d2 = density(ln2, edge=TRUE, diggle=TRUE)
 ########################
 x_coord_3<-F3[,1]
 y_coord_3<-F3[,2]
@@ -150,8 +150,10 @@ y_coord_3<-F3[,2]
  ln3 = with(MBP3,
            ppp(x = x_coord_3, y = y_coord_3, xrange = range(x_coord_3), yrange = range(y_coord_3)))
 plot(ln3)
-d3 = density(ln3, edge=TRUE, diggle=TRUE)
+d3 = density(ln3, edge=TRUE, diggle=TRUE,sigma=60)
 plot(density(ln3))
+
+
 
 
 
