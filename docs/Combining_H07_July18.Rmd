@@ -1,0 +1,156 @@
+---
+title: "Datasets"
+author: "Hainan Xu"
+date: "18/07/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(spatstat)
+```
+
+Sample H07-0500_79205589_29_MBP:
+    6*2 bins in total
+    Image dimension:750\times 587
+```{R}
+
+
+df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_02_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")
+
+df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_03_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750)
+
+df3<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_04_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_y=com_y+587)
+
+df4<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_05_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750,com_y=com_y+587)
+
+df5<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_06_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+587*2)
+
+df6<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_07_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750,com_y=com_y+587*2)
+####
+df7<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_08_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+587*3)
+df8<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_09_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750,com_y=com_y+587*3)
+df9<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_10_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+587*4)
+df10<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_11_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750,com_y=com_y+587*4)
+df11<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_12_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x,com_y=com_y+587*5)
+df12<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_13_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750,com_y=com_y+587*5)
+
+df_full=rbind(df1,df2,
+              df3,df4,
+              df5,df6,
+              df7,df8,
+              df9,df10,
+              df11,df12)
+
+ln = with(df_full,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+plot(density(ln,sigma=190,adjust=1))
+
+hist(df_full$com_y,breaks=200)
+
+dim(df_full)
+plot(Gest(ln),xlim=c(0,10))
+
+write_csv(df_full,"H07-0500_79205589_29_MBP")
+
+```
+Sample H07-0500_79205589_79_MBP: 
+  7*2 bins in total;
+  Image dimension:750\times 600(bin 2-13) 750\times 259(bin 14,15)
+  information for bin 6 is missing
+```{R}
+df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")
+df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._03_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y)%>%select("com_x","com_y","pixel_area","roi_source")
+
+df3<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._04_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600)%>%select("com_x","com_y","pixel_area","roi_source")
+df4<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._05_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600)%>%select("com_x","com_y","pixel_area","roi_source")
+
+#df5<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._06_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600*2)%>%select("com_x","com_y","pixel_area","roi_source")
+df6<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._07_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600*2)%>%select("com_x","com_y","pixel_area","roi_source")
+
+df7<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._08_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600*3)%>%select("com_x","com_y","pixel_area","roi_source")
+df8<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._09_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600*3)%>%select("com_x","com_y","pixel_area","roi_source")
+
+df9<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._10_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600*4)%>%select("com_x","com_y","pixel_area","roi_source")
+df10<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._11_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600*4)%>%select("com_x","com_y","pixel_area","roi_source")
+
+df11<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._12_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600*5)%>%select("com_x","com_y","pixel_area","roi_source")
+df12<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._13_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600*5)%>%select("com_x","com_y","pixel_area","roi_source")
+
+df13<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._14_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+600*6)%>%select("com_x","com_y","pixel_area","roi_source")
+df14<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_79/H07-0500_79205589_79_MBP._15_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+600*6)%>%select("com_x","com_y","pixel_area","roi_source")
+
+
+
+df_full=rbind(df1,df2,
+              df3,df4,
+              df6,
+              df7,df8,
+              df9,df10,
+              df11,df12,
+              df13,df14)
+
+ln = with(df_full,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+plot(density(ln,sigma=190,adjust=1))
+
+hist(df_full$com_y,breaks=200)
+
+dim(df_full)
+plot(ln)
+write_csv(df_full,"H07-0500_79205589_79_MBP")
+
+plot(Gest(ln),xlim=c(0,10))
+
+```
+Sample H07-0500_79205589_129_MBP: 
+  7*2 bins in total;
+  Image dimension:750\times 500(bin 2-13) 750\times 452(bin 14,15)
+  information for bin 6 is missing
+
+```{R}
+df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._02_analysis_results.csv")
+df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._03_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y)
+
+df3<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._04_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500)
+df4<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._05_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500)
+
+df5<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._06_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500*2)
+df6<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._07_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500*2)
+
+df7<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._08_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500*3)
+df8<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._09_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500*3)
+
+df9<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._10_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500*4)
+df10<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._11_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500*4)
+
+df11<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._12_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500*5)
+df12<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._13_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500*5)
+
+df13<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._14_analysis_results.csv")%>%mutate(com_x=com_x,com_y=com_y+500*6)
+df14<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_129_MBP/H07-0500_79205589_129_MBP._15_analysis_results.csv")%>%mutate(com_x=com_x+750,com_y=com_y+500*6)
+
+df_full=rbind(df1,df2,
+              df3,df4,
+              df5,df6,
+              df7,df8,
+              df9,df10,
+              df11,df12,
+              df13,df14)
+
+ln = with(df_full,
+  ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+
+plot(density(ln,sigma=190,scalekernel=TRUE))
+
+hist(df_full$com_y,breaks=200)
+
+plot(ln)
+plot(Gest(ln),xlim=c(0,10))
+write_csv(df_full,"H07-0500_79205589_129_MBP")
+
+```
