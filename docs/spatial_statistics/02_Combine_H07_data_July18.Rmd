@@ -17,7 +17,6 @@ Sample H07-0500_79205589_29_MBP:
     Image dimension:750\times 587
 ```{R}
 
-
 df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_02_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")
 
 df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_29_MBP/images/H07-0500_79205589_29_MBP_03_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+750)
@@ -44,10 +43,18 @@ df_full=rbind(df1,df2,
               df9,df10,
               df11,df12)
 
+
+#df_partial=rbind(df1,df3)
+
+plot(df_partial$com_x,df_partial$com_y)
 ln = with(df_full,
   ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 
 plot(density(ln,sigma=190,adjust=1))
+
+plot(df1$com_x,df1$com_y)
+
+plot(df3$com_x,df3$com_y)
 
 hist(df_full$com_y,breaks=200)
 
@@ -57,6 +64,9 @@ plot(Gest(ln),xlim=c(0,10))
 write_csv(df_full,"H07-0500_79205589_29_MBP")
 
 ```
+
+#verification of correct 
+
 Sample H07-0500_79205589_79_MBP: 
   7*2 bins in total;
   Image dimension:750\times 600(bin 2-13) 750\times 259(bin 14,15)

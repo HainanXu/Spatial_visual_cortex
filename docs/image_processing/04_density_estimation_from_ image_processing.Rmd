@@ -1,0 +1,94 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+#check for correction of data combination 
+
+```{R}
+library("spatstat")
+library("EBImage")
+```
+
+```{R}
+im1=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/29.png")#29
+im2=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/79.png")
+im3=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/129.png")
+
+par(mfrow=c(1,3))
+display(im1,method="raster")
+display(im2,method="raster")
+display(im3,method="raster")
+```
+
+```{R}
+par(mfrow=c(1,3))
+hist(im1,xlim=c(0,1))
+hist(im2,xlim=c(0,1))
+hist(im3,xlim=c(0,1))
+
+r1 = channel(im1,"r")
+r2 = channel(im2,"r")
+r3 = channel(im3,"r")
+
+```
+
+```{R}
+
+rThresh1=r1<0.25
+display(rThresh1)
+rOpened1 = EBImage::opening(rThresh1,
+                            kern = makeBrush(1, shape = "disc"))
+rThresh2=r2<0.25
+rOpened2 = EBImage::opening(rThresh2,
+                            kern = makeBrush(3, shape = "disc"))
+rThresh3=r3<0.25
+rOpened3 = EBImage::opening(rThresh3,
+                            kern = makeBrush(1, shape = "disc"))
+
+par(mfrow=c(1,3))
+display(rThresh1,method="raster")
+display(rThresh2,method="raster")
+display(rThresh3,method="raster")
+
+par(mfrow=c(1,3))
+display(rOpened1,method="raster")
+display(rOpened2,method="raster")
+display(rOpened3,method="raster")
+```
+
+```{R}
+rSeed1 = bwlabel(rOpened1)
+rSeed2 = bwlabel(rOpened2)
+rSeed3 = bwlabel(rOpened3)
+
+F1 = computeFeatures(rSeed1,im1, xname = "r")
+F2 = computeFeatures(rSeed2,im2, xname = "r")
+F3 = computeFeatures(rSeed3,im3, xname = "r")
+```
+
+```{R}
+MBP1<-data.frame(x=F1[,1],y=F1[,2],size=F1[,6])
+ln1 = with(MBP1,ppp(x =x, y =y,marks=size, xrange = range(x), yrange = range(y)))
+d1 = density(ln1, edge=TRUE, diggle=TRUE)
+
+MBP2<-data.frame(x=F2[,1],y=F2[,2],size=F2[,6])
+ln2 = with(MBP2,ppp(x =x, y =y,marks=size, xrange = range(x), yrange = range(y)))
+d2= density(ln2, edge=TRUE, diggle=TRUE)
+
+MBP3<-data.frame(x=F3[,1],y=F3[,2],size=F3[,6])
+ln3 = with(MBP3,ppp(x =x, y =y,marks=size, xrange = range(x), yrange = range(y)))
+d3= density(ln3, edge=TRUE, diggle=TRUE)
+
+par(mfrow=c(2,3))
+plot(ln1)
+plot(ln2)
+plot(ln3)
+plot(d1)
+plot(d2)
+plot(d3)
+
+
+```

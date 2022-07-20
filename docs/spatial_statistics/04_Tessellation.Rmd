@@ -1,0 +1,133 @@
+---
+title: "Tessellation"
+author: "Hainan Xu"
+date: "19/07/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{R message=FALSE}
+library(dplyr)
+library(readr)
+library(spatstat)
+library(EBImage)
+```
+
+4 samples are layered on each other in the sequence of df1 to df4.
+```{r message=FALSE, warning=FALSE}
+df1 <- read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/docs/H07-0500_79205589_29_MBP.csv")
+df2<- read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/docs/H07-0500_79205589_79_MBP.csv")
+df3 <- read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/docs/H07-0500_79205589_129_MBP.csv")
+df4 <- read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/docs/H07-0500_79205589_179_MBP.csv")
+
+im1=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/29.png")#29
+im2=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/79.png")
+im3=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/129.png")
+im4=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/docs/image_processing/179.jpeg")
+
+par(mfrow=c(1,4))
+display(flip(im1),method="raster")
+display(flip(im2),method="raster")
+display(flip(im3),method="raster")
+display(flip(im4),method="raster")
+```
+
+Convert the samples into ppp objects.
+```{R}
+s1 = with(df1,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+s2 = with(df2,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+s3 = with(df3,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+s4 = with(df4,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+#white matter layers
+s1_wm=with(df1%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
+s2_wm=with(df2%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
+s3_wm=with(df3%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
+s4_wm=with(df4%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
+```
+
+```{R}
+par(mfrow=c(2,4))
+plot(s1)
+plot(s2)
+plot(s3)
+plot(s4)
+plot(density(s1,edge=TRUE, diggle=TRUE))
+plot(density(s2,edge=TRUE, diggle=TRUE))
+plot(density(s3,edge=TRUE, diggle=TRUE))
+plot(density(s4,edge=TRUE, diggle=TRUE))
+
+```
+
+```{R}
+par(mfrow=c(1,4))
+plot(Gest(s1),xlim=c(0,10))
+plot(Gest(s2),xlim=c(0,10))
+plot(Gest(s3),xlim=c(0,10))
+plot(Gest(s4),xlim=c(0,10))
+
+par(mfrow=c(1,4))
+plot(Kest(s1),xlim=c(0,10))
+plot(Kest(s2),xlim=c(0,10))
+plot(Kest(s3),xlim=c(0,10))#Ripley's isotropic correction
+plot(Kest(s4,nlarge=4000),xlim=c(0,10))#point number exceeds 3000, need to define nlarge; use a boarder correction
+```
+
+```{R}
+#white matter layer
+par(mfrow=c(1,4))
+plot(Gest(s1_wm))
+plot(Gest(s2_wm))
+plot(Gest(s3_wm,xlim=c(0,100)))
+plot(Gest(s4_wm))
+
+par(mfrow=c(1,4))
+plot(Kest(s1_wm))
+plot(Kest(s2_wm))
+plot(Kest(s3_wm,xlim=c(0,100)))
+plot(Kest(s4_wm))
+```
+
+Create tessellation for white matter layer of s4:
+
+```{R}
+#dirichlet triangulation of white matter in sample 1
+V<-dirichlet(s1_wm)
+U<-tiles(V)
+t<-(sapply(U,diameter))
+plot(t)
+plot(split(s1_wm,V))
+plot(delaunay(s1_wm))
+
+qqnorm(t, pch = 1, frame = FALSE)
+qqline(t, col = "steelblue", lwd = 2)
+
+#split cells in sample 2 using the tessellation of sample 1
+plot(split(s2_wm,V))
+```
+
+```{r}
+library(spatstat)
+qq=quadratcount(s4_wm,nx=3,ny=2)
+plot(qq)
+quadrat.test(qq)
+```
+
+
+```{R}
+#dirichlet triangulation of white matter in sample 1
+V<-dirichlet(s1)
+U<-tiles(V)
+t<-(sapply(U,diameter))
+plot(t)
+plot(split(s1,V))
+plot(delaunay(s1))
+
+qqnorm(t, pch = 1, frame = FALSE)
+qqline(t, col = "steelblue", lwd = 2)
+
+
+```

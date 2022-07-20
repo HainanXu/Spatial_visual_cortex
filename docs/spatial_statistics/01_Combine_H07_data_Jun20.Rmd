@@ -20,6 +20,7 @@ library(tidyverse)
 #first row
 df1<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._01_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")
 
+
 #x axis + 500
 df2<-read_csv("/Users/hainanxu/Documents/spatial_visual_cortex/data/H07-0500_79205589_179_MBP/H07-0500_79205589_179_MBP._02_analysis_results.csv")%>%select("com_x","com_y","pixel_area","roi_source")%>%mutate(com_x=com_x+500)
 #x axis + 1000
@@ -149,8 +150,6 @@ df_full=rbind(df1,df2,df3,
               df37,df38,df39,
               df40,df41,df42
               )
-
-dim(df_full)
 
 write_csv(df_full,"H07-0500_79205589_179_MBP")
 
@@ -322,6 +321,9 @@ plot(eK,main="K function of white matter layer")
 gln = Gest(ln)
 plot(gln)
 
+kln = Kest(ln)
+plot(kln)
+
 ginhomln=Ginhom(ln)
 plot(ginhomln,xlim=c(0,35))
 eGinhom = envelope(ln, fun=Ginhom, nsim=200,nrank=1)
@@ -370,11 +372,15 @@ plot(pcrln)
 library(spatstat)
 plot(dirichlet(ln2))
 
-V<-dirichlet(ln)
+V<-dirichlet(ln2)
 U<-tiles(V)
-sapply(U,diameter)
-
+t<-(sapply(U,diameter))
+plot(t)
 plot(split(ln2,V))
+
+plot(ln2)
+
+plot(cut(ln2,V))
 
 nnclean(ln,k=10,plothist = TRUE)
 

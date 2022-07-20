@@ -14,3 +14,6 @@ docs/*.docx
 docs/*.log
 docs/*.tex
 docs/*.pdf
+
+docs/image_processing/*.png
+docs/image_processing/*.jpeg
