@@ -8,13 +8,15 @@ data/
 docs_examples/
 Figures/
 
-docs/*.html
+
 
 docs/*.docx
+docs/image_processing*.html
 docs/*.log
 docs/*.tex
 docs/*.pdf
 docs/spatial_statistics/*.pptx
+
 
 docs/image_processing/*.png
 docs/image_processing/*.jpeg
