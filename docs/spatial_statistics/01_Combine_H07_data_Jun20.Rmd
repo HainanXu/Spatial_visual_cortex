@@ -151,7 +151,7 @@ df_full=rbind(df1,df2,df3,
               df40,df41,df42
               )
 
-write_csv(df_full,"H07-0500_79205589_179_MBP")
+write_csv(df_full,"H07-0500_79205589_179_MBP.csv")
 
 library("spatstat")
 ln = with(df_full,
@@ -241,9 +241,9 @@ We generated a scatter plot of the MBP dataset in addition to a mariginal plot. 
 library(ggExtra)
 library(plotly)
 a<-ggplot(df_full,
-   aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x position in pixel")+ylab("y position in pixel")+theme_bw()+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)
+   aes( com_x,  com_y,size=pixel_area))+ geom_point(shape = ".")+xlab("x")+ylab("y")+theme_bw()+geom_jitter(width = 0, height = 0.001, alpha = 0.5)+ theme(aspect.ratio = 1)
 
-b<-ggMarginal(a,type="histogram",fill = "lightgrey",binwidth=10)
+b<-ggMarginal(a,type="histogram",fill = "lightgrey",binwidth=30)
 b
 ?ggMarginal
 
@@ -290,9 +290,6 @@ s1<-plot(ln)
 
 plot(ln2,marks=".")
 
-
-
-ln
 qq2=quadratcount(ln2,nx=3,ny=5)
 quadrat.test(qq2)
 
@@ -330,7 +327,7 @@ eGinhom = envelope(ln, fun=Ginhom, nsim=200,nrank=1)
 plot(eGinhom,xlim=c(0,5))
 
 eG<-envelope(ln, fun=Gest, nsim=200,nrank=1)
-plot(eG)
+plot(eG,xlim=c(0,25))
 
 plot(eG,xlim=c(0,5))
 
@@ -341,8 +338,6 @@ plot(eK,xlim=c(0,5))
 par(mfrow=c(1,2))
 plot(eG,xlim=c(0,100),main="G function")
 plot(eK,main="K function")
-
-
 ```
 ```{R}
 #inhomogeneious L function for MBP datasets

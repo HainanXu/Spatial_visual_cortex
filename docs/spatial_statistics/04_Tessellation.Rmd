@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{R message=FALSE}
+```{R message=FALSE, warning=FALSE}
 library(dplyr)
 library(readr)
 library(spatstat)
@@ -41,12 +41,26 @@ Convert the samples into ppp objects.
 s1 = with(df1,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 s2 = with(df2,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 s3 = with(df3,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-s4 = with(df4,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+s4 = with(df4,ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(com_y)))
+#s4 = with(df4,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 #white matter layers
 s1_wm=with(df1%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
 s2_wm=with(df2%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
 s3_wm=with(df3%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
 s4_wm=with(df4%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
+
+
+
+
+x<- s1$x
+y <- s1$y
+library(MASS)
+ln_3d <- kde2d(x, y)
+
+persp(ln_3d, box=FALSE)
+
+library(plotly)
+plot_ly(x=ln_3d$x, y=ln_3d$y, z=ln_3d$z) %>% add_surface()
 ```
 
 ```{R}
@@ -60,6 +74,10 @@ plot(density(s2,edge=TRUE, diggle=TRUE))
 plot(density(s3,edge=TRUE, diggle=TRUE))
 plot(density(s4,edge=TRUE, diggle=TRUE))
 
+plot(s4,main="",pch=20)
+
+plot(density(s4,edge=TRUE, diggle=TRUE))
+
 ```
 
 ```{R}
@@ -69,6 +87,7 @@ plot(Gest(s2),xlim=c(0,10))
 plot(Gest(s3),xlim=c(0,10))
 plot(Gest(s4),xlim=c(0,10))
 
+?
 par(mfrow=c(1,4))
 plot(Kest(s1),xlim=c(0,10))
 plot(Kest(s2),xlim=c(0,10))
@@ -95,30 +114,6 @@ Create tessellation for white matter layer of s4:
 
 ```{R}
 #dirichlet triangulation of white matter in sample 1
-V<-dirichlet(s1_wm)
-U<-tiles(V)
-t<-(sapply(U,diameter))
-plot(t)
-plot(split(s1_wm,V))
-plot(delaunay(s1_wm))
-
-qqnorm(t, pch = 1, frame = FALSE)
-qqline(t, col = "steelblue", lwd = 2)
-
-#split cells in sample 2 using the tessellation of sample 1
-plot(split(s2_wm,V))
-```
-
-```{r}
-library(spatstat)
-qq=quadratcount(s4_wm,nx=3,ny=2)
-plot(qq)
-quadrat.test(qq)
-```
-
-
-```{R}
-#dirichlet triangulation of white matter in sample 1
 V<-dirichlet(s1)
 U<-tiles(V)
 t<-(sapply(U,diameter))
@@ -129,5 +124,149 @@ plot(delaunay(s1))
 qqnorm(t, pch = 1, frame = FALSE)
 qqline(t, col = "steelblue", lwd = 2)
 
+#split cells in sample 2 using the tessellation of sample 1
+plot(split(s2_wm,V))
+plot(split(s3_wm,V))
+
+plot(delaunayNetwork(ln))
+```
+
+```{r}
+
+qq1=quadratcount(s1_wm,nx=3,ny=2)
+qq2=quadratcount(s2_wm,nx=3,ny=2)
+qq3=quadratcount(s3_wm,nx=3,ny=2)
+qq4=quadratcount(s4_wm,nx=3,ny=4)
+
+
+par(mfrow=c(1,4))
+quadrat.test(qq1)
+quadrat.test(qq2)
+quadrat.test(qq3)
+quadrat.test(qq4)
+
+par(mfrow=c(1,4))
+plot(qq1)
+plot(qq2)
+plot(qq3)
+plot(qq4)
+
 
 ```
+
+```{R}
+#segmentation
+par(mfrow=c(2,2))
+hist(density(s1),breaks=100,xlim=c(0,1e-03))
+hist(density(s2),breaks=100,xlim=c(0,1e-03))
+hist(density(s3),breaks=100,xlim=c(0,1e-03))
+
+mybreaks<-hist(density(s4),breaks=100,xlim=c(0,1e-03),xlab="Estimated density",ylab="Frequency","")$breaks
+mycolors<-rep("red",length(mybreaks))
+mycolors[mybreaks>=3e-04]<-'grey'
+hist(density(s4),breaks=100,xlim=c(0,1e-03),xlab="Estimated density",ylab="Frequency","",col=mycolors)
+abline(v = 3e-04, col="red", lwd=2, lty=2)
+#mask
+par(mfrow=c(1,4))
+plot(density(s1)<4e-04) 
+plot(density(s2)<2e-04) 
+plot(density(s3)<2e-04)
+plot(density(s4)<4e-04)
+
+
+par(mfrow=c(1,4))
+plot(density(s1)) 
+plot(s1[density(s1)<4.5e-04&density(s1)>3.2e-04],add=TRUE)
+
+
+
+s1_blue=with(df1%>%filter(com_y<2000),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:2000)))
+plot(s1_blue)
+s1_green=with(df1%>%filter(com_y<3600&com_y>2000),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(2000:3600)))
+plot(s1_green)
+
+hist(density(s1),breaks=100)
+
+qq6=quadratcount(s1_blue[density(s1_blue)<7e-04&density(s1_blue)>4e-04],nx=3,ny=6)
+plot(qq6)
+quadrat.test(qq6)
+
+qq7=quadratcount(s1_green[density(s1_green)<7e-04&density(s1_green)>4e-04],nx=3,ny=16)
+plot(qq7)
+quadrat.test(qq7)
+
+plot(envelope(s1_green[density(s1_green)<7e-04&density(s1_green)>4e-04],fun=Gest, nsim=500,nrank=1))
+plot(envelope(s1_blue[density(s1_blue)<7e-04&density(s1_blue)>4e-04],fun=Gest, nsim=500,nrank=1))
+
+plot(density(s1)) 
+plot(s1[density(s1)>4e-04],add=TRUE)
+
+plot(s1[density(s1)>7e-04])
+
+
+#plot(density(s2)<2e-04) 
+#plot(density(s3)<2e-04)
+#plot(density(s4)<8e-04)
+
+plot(density(s1)) 
+plot(s1[density(s1)<1],add=TRUE)
+plot(density(s4,sigma=120)) 
+
+```
+
+
+
+```{R}
+class(s1[density(s1)>7e-04])
+
+plot((s1[density(s1)>7e-04]))
+
+class((s4[density(s4)<3e-04]))
+plot(density(s4))
+plot((s4[density(s4)<3e-04]),add=TRUE,col="white",pch=20)
+
+
+qq5=quadratcount(s1[density(s1)>7e-04],nx=3,ny=10)
+plot(qq5)
+quadrat.test(qq5)
+
+
+s1[density(s1)>7e-04]
+g<-Gest(s1[density(s1)>7e-04])
+plot(g,xlim=c(0,10))
+
+?Gest
+
+
+eG = envelope(s4[density(s4)<3e-04], fun=Gest, nsim=50,nrank=1)
+plot(eG)
+
+eK = envelope(s4[density(s4)<3e-04], fun=Kest, nsim=50,nrank=1)
+plot(eK)
+
+S<-clickpoly(add = TRUE)
+plot(s1[S, drop=FALSE, tight=TRUE])
+
+
+elev[locator(1)]
+
+s1[density(s1)>7e-04]
+k<-Kest(s1[density(s1)>7e-04])
+plot(k,xlim=c(0,10))
+```
+
+```{R}
+eK<-envelope(s1[density(s1)<4e-04], fun=Kest, nsim=50, nrank=1)
+plot(eK)
+plot(eK,xlim=c(0,30),main="")
+
+eK<-envelope(s1[density(s1)<4e-04], fun=Gest, nsim=100, nrank=1)
+plot(eG)
+plot(eG,xlim=c(0,30),main="")
+
+plot(s4[3e-04<density(s4)<1],pch='.',col='red')
+plot(s4,pch='.')
+plot(s4[density(s4)<2.5e-04],pch='.',add=TRUE,col='red')
+```
+
+
