@@ -41,8 +41,8 @@ Convert the samples into ppp objects.
 s1 = with(df1,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 s2 = with(df2,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 s3 = with(df3,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
-s4 = with(df4,ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(com_y)))
-#s4 = with(df4,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
+#s4 = with(df4,ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(com_y)))
+s4 = with(df4,ppp(x = com_x, y = com_y, marks = pixel_area, xrange = range(com_x), yrange = range(com_y)))
 #white matter layers
 s1_wm=with(df1%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
 s2_wm=with(df2%>%filter(com_y<=400),ppp(x = com_x, y = com_y, xrange = range(com_x), yrange = range(0:400)))
@@ -64,19 +64,19 @@ plot_ly(x=ln_3d$x, y=ln_3d$y, z=ln_3d$z) %>% add_surface()
 ```
 
 ```{R}
-par(mfrow=c(2,4))
-plot(s1)
-plot(s2)
-plot(s3)
-plot(s4)
-plot(density(s1,edge=TRUE, diggle=TRUE))
-plot(density(s2,edge=TRUE, diggle=TRUE))
-plot(density(s3,edge=TRUE, diggle=TRUE))
-plot(density(s4,edge=TRUE, diggle=TRUE))
+par(mfrow=c(2,3))
+plot(s1,main='')
+#plot(s2)
+plot(s3,main='')
+plot(s4,main='')
+plot(density(s1,edge=TRUE, diggle=TRUE),main='')
+#plot(density(s2,edge=TRUE, diggle=TRUE))
+plot(density(s3,edge=TRUE, diggle=TRUE),main='')
+plot(density(s4,edge=TRUE, diggle=TRUE),main='')
 
-plot(s4,main="",pch=20)
+#plot(s4,main="",pch=20)
 
-plot(density(s4,edge=TRUE, diggle=TRUE))
+#plot(density(s4,edge=TRUE, diggle=TRUE))
 
 ```
 

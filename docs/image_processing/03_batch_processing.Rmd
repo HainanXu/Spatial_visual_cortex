@@ -21,6 +21,7 @@ im1=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/Image_June14
 im2=im1=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/Image_June14/182876478_two_cropped.jpg")
 im3=im1=readImage("/Users/hainanxu/Documents/spatial_visual_cortex/data/Image_June14/182876478_three_cropped.jpg")
 
+par(mfrow=c(1,2))
 display(im1,method="raster")
 display(im2,method="raster")
 display(im3,method="raster")
