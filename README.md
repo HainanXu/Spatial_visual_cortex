@@ -23,7 +23,7 @@ The docs is constitute of 2 parts:
 
 02: Extracted the information and analysis for the following image.
 
-<img src="/Users/hainanxu/Documents/spatial_visual_cortex/data/im3.jpg" alt="im3" style="zoom:33%;" />
+
 
 03: Feature extraction for cropped image with more MBP cells.
 
