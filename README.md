@@ -17,7 +17,7 @@ The docs is constitute of 2 parts:
 ## 1 Image processing
 01: Explored and learnt about image manipulation on inital image example.
 
-<img src="/Users/hainanxu/Documents/spatial_visual_cortex/data/im1.jpg" alt="im1" style="zoom:6%;" />
+
 
 
 
@@ -27,11 +27,10 @@ The docs is constitute of 2 parts:
 
 03: Feature extraction for cropped image with more MBP cells.
 
-<img src="/Users/hainanxu/Downloads/plot_zoom.png" alt="plot_zoom" style="zoom:33%;" />
 
 04: Feature extraction and density estimation for sample 29,79,179(ordered from left to right) to compare with the integrated data using Pipsqeak.  This step is used for check whether the datasets from Pipsueak is combined in correct order.
 
-<img src="/Users/hainanxu/Downloads/plot_zoom2.png" alt="plot_zoom2" style="zoom: 40%;" />
+
 
 ## 2 Spatial statistics
 
