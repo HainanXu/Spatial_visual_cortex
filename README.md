@@ -11,6 +11,10 @@ The docs is constitute of 2 parts:
    ·generation of inhomogenous Poisson point pattern.
 
    ·3d visualization of intensity estimation graph using plotly.
+   
+   ·Lightning talk slides for BioConductor 2022.
+   
+   
 
    
 
